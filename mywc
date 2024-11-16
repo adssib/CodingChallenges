@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Initialize counters
+lines=0
+words=0
+chars=0
+
+# Check if a file is provided as an argument
+if [ $# -eq 0 ]; then
+    echo "Usage: mywc <filename>"
+    exit 1
+fi
+
+# Read the file line by line
+while IFS= read -r line; do
+    # Increment line count
+    ((lines++))
+    
+    # Count words in the line
+    word_count=$(echo "$line" | wc -w)
+    ((words += word_count))
+    
+    # Count characters in the line
+    char_count=${#line}
+    ((chars += char_count))
+done < "$1"
+
+# Print the results
+echo "Lines: $lines"
+echo "Words: $words"
+echo "Characters: $chars"
+echo "Filename: $1"
