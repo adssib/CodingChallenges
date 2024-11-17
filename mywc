@@ -21,8 +21,10 @@ Please use one one of the following parameters:
 "
 
 handle_default_param() {
-    local param=$1
-    local file=$2
+    handle_bytes_param $1    
+    handle_words_param $1
+    handle_char_param $1
+    handle_lines_param $1
 }
 
 handle_bytes_param() {
@@ -49,14 +51,28 @@ handle_words_param() {
     echo "Words: $words in $file"
 }
 
-handle_lines_param(){
-    local param=$1
-    local file=$2
+handle_lines_param() {
+    local file=$1
+    local lines=0
+    
+    while IFS= read -r line
+    do
+        ((lines++))
+    done < "$file"
+    
+    echo "Lines: $lines in $file"
 }
 
-handle_char_param(){
-    local param=$1
-    local file=$2
+handle_char_param() {
+    local file=$1
+    local chars=0
+    
+    while IFS= read -r -n1 char
+    do
+        ((chars++))
+    done < "$file"
+    
+    echo "Characters: $chars in $file"
 }
 
 # Check if no orgument have been provided, Or if the help command have been asked 
@@ -65,28 +81,24 @@ if  [ $# -eq 0 ] || [ "$1" = "help" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ];
     exit 1 
 fi
 
-# "fi" marks the end of a if statement
-# "$1" marks the first argument 
 if [ "$1" = "-c" ]; then
-    # pass the file parameter to the function
-    handle_bytes_param $2     
+    handle_bytes_param "$2"     
     exit 0
-fi
-
-if [ "$1" = "-l" ]; then
-    # pass the file parameter to the function
-    handle_lines_param $2     
+elif [ "$1" = "-l" ]; then
+    handle_lines_param "$2"     
     exit 0
-fi
-
-if [ "$1" = "-m" ]; then
-    # pass the file parameter to the function
-    handle_char_param $2     
+elif [ "$1" = "-m" ]; then
+    handle_char_param "$2"     
     exit 0
-fi
-
-if [ "$1" = "-w" ]; then
-    # pass the file parameter to the function
-    handle_words_param $2     
+elif [ "$1" = "-w" ]; then
+    handle_words_param "$2"     
     exit 0
+else
+    # This is the default case
+    if [ -f "$1" ]; then
+        handle_default_param "$1"
+    else
+        echo "$Help"
+        exit 1
+    fi
 fi
