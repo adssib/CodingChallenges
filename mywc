@@ -32,28 +32,40 @@ lines=0
 words=0
 chars=0
 
-# Check if a file is provided as an argument
+handle_default_param() {
+    local param=$1
+    local file=$2
+}
+
+handle_bytes_param() {
+    local file=$1
+    local bytes=0
+    
+    while IFS= read -r -n1 char
+    do
+        ((bytes++))
+    done < "$file"
+    
+    echo "Bytes: $bytes in $file"
+}
+
+handle_words_param(){
+    local param=$1
+    local file=$2
+}
+
+handle_lines_param(){
+    local param=$1
+    local file=$2
+}
+
+handle_char_param(){
+    local param=$1
+    local file=$2
+}
+
+# Check if no orgument have been provided
 if [ $# -eq 0 ]; then
     echo "Usage: mywc <filename> or mywc -c"
     exit 1
 fi
-
-# Read the file line by line
-while IFS= read -r line; do
-    # Increment line count
-    ((lines++))
-    
-    # Count words in the line
-    word_count=$(echo "$line" | wc -w)
-    ((words += word_count))
-    
-    # Count characters in the line
-    char_count=${#line}
-    ((chars += char_count))
-done < "$1"
-
-# Print the results
-echo "Lines: $lines"
-echo "Words: $words"
-echo "Characters: $chars"
-echo "Filename: $1"
