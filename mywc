@@ -19,18 +19,6 @@ Please use one one of the following parameters:
     1) mywc path/to/test/file.txt 
             this is the defeault parameter, the equivalent to the -c, -l and -w options. 
 "
-# "fi" marks the end of a if statement
-# "$1" marks the first argument 
-if [ "$1" = "-c" ]; then
-    echo "hello world"
-    exit 0
-fi
-
-# Initialize counters
-bytes=0
-lines=0
-words=0
-chars=0
 
 handle_default_param() {
     local param=$1
@@ -64,8 +52,16 @@ handle_char_param(){
     local file=$2
 }
 
-# Check if no orgument have been provided
-if [ $# -eq 0 ]; then
-    echo "Usage: mywc <filename> or mywc -c"
-    exit 1
+# Check if no orgument have been provided, Or if the help command have been asked 
+if  [ $# -eq 0 ] || [ "$1" = "help" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then 
+    echo "$Help"
+    exit 1 
+fi
+
+# "fi" marks the end of a if statement
+# "$1" marks the first argument 
+if [ "$1" = "-c" ]; then
+    # pass the file parameter to the function
+    handle_bytes_param $2     
+    exit 0
 fi
