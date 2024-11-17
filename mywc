@@ -1,13 +1,40 @@
 #!/bin/bash
 
+# help string to be printed when the user does not use it in the right way 
+Help="
+Wrong Usage....
+Please use one one of the following parameters:
+    1) mywc -c path/to/test/file.txt
+            this option will print the number of bites in the wanted file.
+    
+    2) mywc -l path/to/test/file.txt
+            this option will print the number of line in the wanted file.
+    
+    3) mywc -m path/to/test/file.txt
+            this option will print the number of characters in the wanted file.
+    
+    4) mywc -w path/to/test/file.txt
+            this option will print the number of words in the wanted file.
+            
+    1) mywc path/to/test/file.txt 
+            this is the defeault parameter, the equivalent to the -c, -l and -w options. 
+"
+# "fi" marks the end of a if statement
+# "$1" marks the first argument 
+if [ "$1" = "-c" ]; then
+    echo "hello world"
+    exit 0
+fi
+
 # Initialize counters
+bytes=0
 lines=0
 words=0
 chars=0
 
 # Check if a file is provided as an argument
 if [ $# -eq 0 ]; then
-    echo "Usage: mywc <filename>"
+    echo "Usage: mywc <filename> or mywc -c"
     exit 1
 fi
 
