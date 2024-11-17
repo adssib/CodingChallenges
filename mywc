@@ -37,9 +37,16 @@ handle_bytes_param() {
     echo "Bytes: $bytes in $file"
 }
 
-handle_words_param(){
-    local param=$1
-    local file=$2
+handle_words_param() {
+    local file=$1
+    local words=0
+    
+    while read -r line
+    do
+        ((words += $(echo $line | wc -w)))
+    done < "$file"
+    
+    echo "Words: $words in $file"
 }
 
 handle_lines_param(){
@@ -63,5 +70,23 @@ fi
 if [ "$1" = "-c" ]; then
     # pass the file parameter to the function
     handle_bytes_param $2     
+    exit 0
+fi
+
+if [ "$1" = "-l" ]; then
+    # pass the file parameter to the function
+    handle_lines_param $2     
+    exit 0
+fi
+
+if [ "$1" = "-m" ]; then
+    # pass the file parameter to the function
+    handle_char_param $2     
+    exit 0
+fi
+
+if [ "$1" = "-w" ]; then
+    # pass the file parameter to the function
+    handle_words_param $2     
     exit 0
 fi
