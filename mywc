@@ -42,10 +42,16 @@ handle_bytes_param() {
 handle_words_param() {
     local file=$1
     local words=0
+    local in_word=false
     
-    while read -r line
+    while IFS= read -r -n1 char
     do
-        ((words += $(echo $line | wc -w)))
+        if [[ $char =~ [[:space:]] ]]; then
+            in_word=false
+        elif [ "$in_word" = false ]; then
+            ((words++))
+            in_word=true
+        fi
     done < "$file"
     
     echo "Words: $words in $file"
