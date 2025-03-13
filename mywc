@@ -88,16 +88,16 @@ if  [ $# -eq 0 ] || [ "$1" = "help" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ];
 fi
 
 if [ "$1" = "-c" ]; then
-    handle_bytes_param "$2"     
+    handle_bytes_param "$2"
     exit 0
 elif [ "$1" = "-l" ]; then
-    handle_lines_param "$2"     
+    handle_lines_param "$2"
     exit 0
 elif [ "$1" = "-m" ]; then
-    handle_char_param "$2"     
+    handle_char_param "$2"
     exit 0
 elif [ "$1" = "-w" ]; then
-    handle_words_param "$2"     
+    handle_words_param "$2"
     exit 0
 else
     # This is the default case
